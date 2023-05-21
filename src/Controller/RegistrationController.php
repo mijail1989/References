@@ -24,6 +24,7 @@ class RegistrationController extends AbstractController
         $user->setName($body["name"]);
         $user->setEmail($body["email"]);
         $user->setPhone($body["phone"]);
+        $user->setRoles(["ROLE_USER"]);
         $plaintextPassword = $body["password"];
         $hashedPassword = $passwordHasher->hashPassword(
             $user,
