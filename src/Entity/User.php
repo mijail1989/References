@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -35,6 +37,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $img = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reference::class)]
+    private Collection $refs;
+
+    public function __construct()
+    {
+        $this->refs = new ArrayCollection();
+    }
+
+    public function jsonSerialize() {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'roles' => $this->roles,
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'img' => $this->img,
+            'refs'=>$this->refs
+        ];
+    }
+
 
     public function getId(): ?int
     {
@@ -138,6 +161,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImg(?string $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reference>
+     */
+    public function getRefs(): Collection
+    {
+        return $this->refs;
+    }
+
+    public function addRef(Reference $ref): self
+    {
+        if (!$this->refs->contains($ref)) {
+            $this->refs->add($ref);
+            $ref->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRef(Reference $ref): self
+    {
+        if ($this->refs->removeElement($ref)) {
+            // set the owning side to null (unless already changed)
+            if ($ref->getUser() === $this) {
+                $ref->setUser(null);
+            }
+        }
 
         return $this;
     }

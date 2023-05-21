@@ -29,6 +29,10 @@ class Reference implements JsonSerializable
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $img = null;
 
+    #[ORM\ManyToOne(inversedBy: 'refs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function jsonSerialize() {
         return [
             'id' => $this->id,
@@ -37,6 +41,7 @@ class Reference implements JsonSerializable
             'lang' => $this->lang,
             'description' => $this->description,
             'img' => $this->img,
+            'user'=>$this->user
         ];
     }
     
@@ -106,6 +111,18 @@ class Reference implements JsonSerializable
     {
         $this->img = $img;
         
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
         return $this;
     }
 }

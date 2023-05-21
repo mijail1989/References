@@ -11,10 +11,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Bundle\SecurityBundle\Security;
 #[Route('/api/reference')]
 class ReferenceController extends AbstractController
 {
+    public function __construct(
+        private Security $security,
+    ){
+    }
+
     #[Route('/', name: 'app_reference_index', methods: ['GET'])]
     public function index(ReferenceRepository $referenceRepository): Response
     {
@@ -32,6 +37,7 @@ class ReferenceController extends AbstractController
         $reference->setLang($body["lang"]);
         $reference->setDescription($body["description"]);
         $reference->setImg($body["img"]);
+        $reference->setUser($this->security->getUser());
 
         $entityManager->persist($reference);
         $entityManager->flush();
