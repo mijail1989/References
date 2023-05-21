@@ -17,10 +17,10 @@ class RegistrationController extends AbstractController
     #[Route('/api/registration', name: 'api_registration', methods: "post")]
     public function index(Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
     {
-        // dd($request->getContent());
         $body= json_decode($request->getContent(), true);
         
         $user = new User();
+
         $user->setName($body["name"]);
         $user->setEmail($body["email"]);
         $user->setPhone($body["phone"]);
@@ -30,6 +30,7 @@ class RegistrationController extends AbstractController
             $plaintextPassword
         );
         $user->setPassword($hashedPassword);
+
         $entityManager->persist($user);
         $entityManager->flush();
 
