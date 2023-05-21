@@ -25,17 +25,4 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('log out');
     }
-
-    #[Route('/api/login', name: 'api_login')]
-    public function index(#[CurrentUser] ?User $user): Response
-    {
-        if (null === $user) {
-            return $this->json([
-                'message' => 'missing credentials',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-        ]);
-    }
 }
