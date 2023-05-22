@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Reference;
 use App\Form\ReferenceType;
 use App\Repository\ReferenceRepository;
+use App\Validator\CreateReferenceRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +29,14 @@ class ReferenceController extends AbstractController
     }
 
     #[Route('/new', name: 'app_reference_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ReferenceRepository $referenceRepository,EntityManagerInterface $entityManager): Response
+    public function new(CreateReferenceRequest $request,EntityManagerInterface $entityManager): Response
     {
-        $body= json_decode($request->getContent(), true);
+        
+        $errors = $request->validate();
+        if(count($errors)){
+            return new JsonResponse(['message' => 'Failed'], 403);
+        }
+        $body= $request->getRequest()->toArray();
         $reference = new Reference();
         $reference->setName($body["name"]);
         $reference->setUrl($body["url"]);
@@ -38,12 +44,9 @@ class ReferenceController extends AbstractController
         $reference->setDescription($body["description"]);
         $reference->setImg($body["img"]);
         $reference->setUser($this->security->getUser());
-
         $entityManager->persist($reference);
         $entityManager->flush();
-        
-        return new Response('Saved new product with id '.$reference->getId());
-
+        return new JsonResponse(['message' => 'New Reference created']);
     }
 
     #[Route('/{id}', name: 'app_reference_show', methods: ['GET'])]

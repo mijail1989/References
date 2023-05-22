@@ -3,22 +3,25 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Validator\RegisterUserRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
-// use App\Repository\UserRepository
 
 class RegistrationController extends AbstractController
 {
     #[Route('/api/registration', name: 'api_registration', methods: "post")]
-    public function index(Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
+    public function index(RegisterUserRequest $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
     {
-        $body= json_decode($request->getContent(), true);
-        
+
+        $errors = $request->validate();
+        if(count($errors)){
+            return new JsonResponse(['message' => 'Failed'], 403);
+        }
+        $body= $request->getRequest()->toArray();
         $user = new User();
 
         $user->setName($body["name"]);
@@ -35,6 +38,6 @@ class RegistrationController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return new Response('Saved new product with id '.$user->getId());
+        return new JsonResponse(['message' => 'New User created']);
     }
 }
