@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Reference;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\ReferenceCrudController;
@@ -48,6 +49,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Frank the wizzard', 'fas fa-list', Reference::class);
+        yield MenuItem::linkToCrud('References', 'fas fa-list', Reference::class);
+        yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class);
     }
 }
