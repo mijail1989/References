@@ -39,7 +39,7 @@ class ReferenceRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    
     public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('r')
@@ -48,11 +48,9 @@ class ReferenceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function findByUserAndId(User $user,$id)
+    public function findById($id)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.user = :user')
-            ->setParameter('user', $user)
             ->andWhere('r.id = :id')
             ->setParameter('id',$id)
             ->getQuery()
