@@ -62,14 +62,24 @@ class RegistrationController extends AbstractController
     }
 
     #[Route("/verify", name: "verify_email")]
-    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
+    public function verifyUserEmail(Request $request, VerifyEmailHelperInterface $verifyEmailHelper, UserRepository $userRepository,EntityManagerInterface $entityManager): Response
     {
         $idQuery = $request->query->get('id');
         $user = $userRepository->find($idQuery);
-        if ($user) {
-            $user->setIsVerified(true);
-            return new JsonResponse(["message" => "Email Verified"]);
+        if (!$user) {
+            return new JsonResponse(["message" => "Error"], 403);
         }
-        return new JsonResponse(["message" => "Error"], 403);
+        try {
+            $verifyEmailHelper->validateEmailConfirmation(
+                $request->getUri(),
+                $user->getId(),
+                $user->getEmail(),
+            );
+        } catch (VerifyEmailExceptionInterface $e) {
+            return new JsonResponse(['error', $e->getReason()], 403);
+        }
+        $user->setIsVerified(true);
+        $entityManager->flush();
+        return new JsonResponse(["message" => "Email Verified"]);
     }
 }
