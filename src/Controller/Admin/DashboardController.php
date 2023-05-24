@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Reference;
 use App\Entity\User;
+use App\Entity\Skins;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\ReferenceCrudController;
@@ -19,7 +20,6 @@ class DashboardController extends AbstractDashboardController
     {
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
         $url = $routeBuilder->setController(ReferenceCrudController::class)->generateUrl();
-
         return $this->redirect($url);
         // return parent::index();
 
@@ -51,5 +51,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('References', 'fas fa-list', Reference::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('Skins', 'fas fa-list', Skins::class);
     }
 }

@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isVerified = null;
 
+    #[ORM\ManyToOne]
+    private ?Skins $skin = null;
+
     public function __construct()
     {
         $this->refs = new ArrayCollection();
@@ -206,6 +209,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+    }
+
+    public function getSkin(): ?Skins
+    {
+        return $this->skin;
+    }
+
+    public function setSkin(?Skins $skin): self
+    {
+        $this->skin = $skin;
 
         return $this;
     }

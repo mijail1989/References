@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
+use App\Entity\Skins;
 use App\Validator\RegisterUserRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,8 @@ class RegistrationController extends AbstractController
         $user->setPhone($body["phone"]);
         $user->setRoles(["ROLE_USER"]);
         $user->setIsVerified(false);
+        $repo = $entityManager->getRepository(Skins::class)->find($body["skin_id"]);
+        $user->setSkin($repo);
         $plaintextPassword = $body["password"];
         $hashedPassword = $passwordHasher->hashPassword(
             $user,

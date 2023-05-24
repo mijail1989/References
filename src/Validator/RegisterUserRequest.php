@@ -6,6 +6,7 @@ use App\Validator\BaseRequest;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\In;
 
 class RegisterUserRequest extends BaseRequest
 {
@@ -25,4 +26,6 @@ class RegisterUserRequest extends BaseRequest
     #[NotBlank()]
     #[Length(min:5,max: 150)]
     protected $password;
+    #[Type('int')]
+    protected $skin_id;
 }
