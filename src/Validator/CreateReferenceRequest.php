@@ -11,22 +11,21 @@ class CreateReferenceRequest extends BaseRequest
 {
     #[Type('string')]
     #[NotBlank()]
-    #[Length(min:5,max: 25)]
+    #[Length(min:5,max: 150)]
     protected $name;
     #[Type('string')]
     #[NotBlank()]
-    #[Length(min:5,max: 25)]
+    #[Length(min:5,max: 150)]
     protected $url;
     #[Type('string')]
     #[NotBlank()]
-    #[Length(min:5,max: 25)]
+    #[Length(2)]
     protected $lang;
     #[Type('string')]
     #[NotBlank()]
-    #[Length(min:15,max: 150)]
+    #[Length(min:8,max: 500)]
     protected $description;
     #[Type('string')]
     #[NotBlank()]
-    #[Length(min:5,max: 150)]
     protected $img;
 }
