@@ -18,6 +18,7 @@ class AppFixtures extends Fixture
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPhone('1112233444');
         $admin->setPassword('$2y$13$jf0jSAVZLtsHIXObaS5ba.UiagagmUWzI/g3SL3lLZxt/cKNI0ip.');
+        $admin->setIsVerified(true);
         $manager->persist($admin);
         $manager->flush();
     }
