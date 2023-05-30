@@ -2,48 +2,54 @@
 
 namespace App\Controller;
 
-use App\Entity\Picture;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Form\PictureFormType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class PictureController extends AbstractController
 {
-    #[Route('/picture', name: 'app_picture')]
-    public function index(Request $request, SluggerInterface $slugger,EntityManagerInterface $entityManager): Response
+    public function __construct(
+        private Security $security,
+    ) {
+    }
+    #[Route('/api/picture', name: 'app_picture', methods: ['POST'])]
+    public function index(EntityManagerInterface $entityManager, ValidatorInterface $validator, SluggerInterface $slugger, UserRepository $userRepository, Request $request)
     {
-        $picture = new Picture();
-
-        $form = $this->createForm(PictureFormType::class, $picture);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $urlFile = $form->get('url')->getData();
-
-            $originalFilename = pathinfo($urlFile->getClientOriginalName(), PATHINFO_FILENAME);
-
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $urlFile->guessExtension();
-            try {
-                $urlFile->move(
-                    $this->getParameter('pictures_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                dd($e);
-            }
-            $picture->setUrl($newFilename);
-            $entityManager->persist($picture);
-            $entityManager->flush();
-        }
-
-
-        return $this->render('picture/index.html.twig', [
-            'form' => $form,
+        $img = $request->files->get("img");
+        $constraint = new File([
+            'maxSize' => '3072k',
+            'mimeTypes' => ['image/*',],
+            'mimeTypesMessage' => 'Please upload a valid Image',
         ]);
+        $errors = $validator->validate($img, $constraint);
+        if (count($errors)) {
+            return new JsonResponse(['message' => 'Failed'], 403);
+        }
+        $originalFilename = pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename . '-' . uniqid() . '.' . $img->guessExtension();
+        try {
+            $img->move(
+                $this->getParameter('pictures_directory'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            dd($e);
+        }
+        $owner = $this->security->getUser();
+        $user = $userRepository->find($owner);
+        $user->setImg($newFilename);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new JsonResponse(['message' => 'New Picture Added']);
     }
 }
