@@ -5,6 +5,7 @@ namespace App\Entity;
 use JsonSerializable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReferenceRepository;
+use Symfony\Component\Security\Http\Authentication\AuthenticatorManager;
 
 #[ORM\Entity(repositoryClass: ReferenceRepository::class)]
 class Reference implements JsonSerializable
@@ -41,7 +42,6 @@ class Reference implements JsonSerializable
             'lang' => $this->lang,
             'description' => $this->description,
             'img' => $this->img,
-            'user'=>$this->user
         ];
     }
     
@@ -125,4 +125,15 @@ class Reference implements JsonSerializable
 
         return $this;
     }
+
+    public function setReference(Array $body,User $user){
+        $this->setName($body["name"]);
+        $this->setUrl($body["url"]);
+        $this->setLang($body["lang"]);
+        $this->setDescription($body["description"]);
+        $this->setImg($body["img"]);
+        $this->setUser($user);
+        return $this;
+    }
+
 }

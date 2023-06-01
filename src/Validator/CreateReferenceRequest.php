@@ -19,7 +19,7 @@ class CreateReferenceRequest extends BaseRequest
     protected $url;
     #[Type('string')]
     #[NotBlank()]
-    #[Length(2)]
+    #[Length(min:3)]
     protected $lang;
     #[Type('string')]
     #[NotBlank()]

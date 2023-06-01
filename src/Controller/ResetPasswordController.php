@@ -29,10 +29,6 @@ class ResetPasswordController extends AbstractController
         private EntityManagerInterface $entityManager
     ) {
     }
-
-    /**
-     * Display & process form to request a password reset.
-     */
     #[Route('', name: 'app_forgot_password_request', methods: ["post"])]
     public function request(ResetPasswordRequest $request, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
@@ -48,9 +44,6 @@ class ResetPasswordController extends AbstractController
         );
     }
 
-    /**
-     * Confirmation page after a user has requested a password reset.
-     */
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
@@ -62,9 +55,6 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
-    /**
-     * Validates and process the reset URL that the user clicked in their email.
-     */
     #[Route('/reset/token', name: 'app_reset_password', methods: ["post"])]
     public function reset(ResetPasswordTokenRequest $request, UserPasswordHasherInterface $passwordHasher, string $token = null): Response
     {
