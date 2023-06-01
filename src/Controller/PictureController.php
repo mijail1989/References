@@ -21,6 +21,7 @@ class PictureController extends AbstractController
         private Security $security,
     ) {
     }
+    // Add IMG file and URL to AUTH ENDPOINT
     #[Route('/api/picture', name: 'app_picture', methods: ['POST'])]
     public function index(EntityManagerInterface $entityManager, ValidatorInterface $validator, SluggerInterface $slugger, UserRepository $userRepository, Request $request)
     {

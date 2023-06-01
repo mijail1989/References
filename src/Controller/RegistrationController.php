@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RegistrationController extends AbstractController
 {
+    //Registration new User ENDPOINT
     #[Route('/api/registration', name: 'api_registration', methods: "post")]
     public function index(RegisterUserRequest $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer, VerifyEmailHelperInterface $verifyEmailHelper): Response
     {
@@ -30,7 +31,6 @@ class RegistrationController extends AbstractController
         }
         $body = $request->getRequest()->toArray();
         $user = new User();
-
         $user->setName($body["name"]);
         $user->setEmail($body["email"]);
         $user->setPhone($body["phone"]);
@@ -61,9 +61,9 @@ class RegistrationController extends AbstractController
         $mailer->send($email);
         return new JsonResponse(['message' => 'New User created, check your Email']);
     }
-
+    //Verify Email new User ENDPOINT
     #[Route("/verify", name: "verify_email")]
-    public function verifyUserEmail(Request $request, VerifyEmailHelperInterface $verifyEmailHelper, UserRepository $userRepository,EntityManagerInterface $entityManager): Response
+    public function verifyUserEmail(Request $request, VerifyEmailHelperInterface $verifyEmailHelper, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
         $idQuery = $request->query->get('id');
         $user = $userRepository->find($idQuery);
