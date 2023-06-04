@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Skins;
-use Symfony\Component\Mime\Email;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use App\Repository\UserRepository;
 use App\Validator\RegisterUserRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,12 +52,15 @@ class RegistrationController extends AbstractController
             $user->getEmail(),
             ['id' => $user->getId()]
         );
-        $email = (new Email())
+        $email = (new TemplatedEmail())
             ->from('Registration@example.com')
             ->to($user->getEmail())
             ->subject('Registration Email')
-            ->html("<p>Thank You {$user->getName()}! Click on the following link to complete your registration</p>
-        <a href='{$signatureComponents->getSignedUrl()}'>click Here!</a>");
+            ->htmlTemplate('emails/registration.html.twig')
+            ->context([
+                "username"=> $user->getName(),
+                "signature"=>$signatureComponents->getSignedUrl()
+            ]);
         $mailer->send($email);
         return new JsonResponse(['message' => 'New User created, check your Email']);
     }
