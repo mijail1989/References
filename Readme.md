@@ -1,5 +1,5 @@
 # What is Reference:
-Reference is a project, currently in the form of a REST API, that aims to allow every registered user to create their own online portfolio.
+Reference is REST API project, that allow every registered user to create their own online portfolio.
 
 Once registered, users will have the ability to upload their "References," which can correspond to articles, portfolios, projects, etc., that are already available online and need to be grouped on a single page.
 
