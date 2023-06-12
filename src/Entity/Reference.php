@@ -2,10 +2,23 @@
 
 namespace App\Entity;
 
+
 use JsonSerializable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReferenceRepository;
-use Symfony\Component\Security\Http\Authentication\AuthenticatorManager;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+
+#[ApiResource(operations: [
+new Get(name: 'reference_show', uriTemplate: '/reference/{id}'),
+new Get(name: 'reference', uriTemplate: '/reference'),
+new Post(name: 'reference_new', uriTemplate: '/reference/new'),
+new Delete(name: 'reference_delete', uriTemplate: '/reference/{id}'),
+new Put(name: 'reference_edit', uriTemplate: '/reference/{id}/edit'),
+])]
 
 #[ORM\Entity(repositoryClass: ReferenceRepository::class)]
 class Reference implements JsonSerializable

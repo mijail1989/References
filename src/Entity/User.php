@@ -2,12 +2,27 @@
 
 namespace App\Entity;
 
+
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use App\Controller\RegistrationController;
+
+#[ApiResource(operations: [
+    new Post(
+        name: 'registration', 
+        uriTemplate: '/registration', 
+        controller: RegistrationController::class
+    ),
+    new Get(name: 'user_show', uriTemplate: 'public/user/{id}')
+])]
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -53,17 +68,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->refs = new ArrayCollection();
     }
 
-    public function jsonSerialize() {
-        return [
-            'id' => $this->id,
-            'email' => $this->email,
-            'roles' => $this->roles,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'img' => $this->img,
-            'refs'=>$this->refs
-        ];
-    }
+    // public function jsonSerialize() {
+    //     return [
+    //         'id' => $this->id,
+    //         'email' => $this->email,
+    //         'roles' => $this->roles,
+    //         'name' => $this->name,
+    //         'phone' => $this->phone,
+    //         'img' => $this->img,
+    //         'refs'=>$this->refs
+    //     ];
+    // }
 
 
     public function getId(): ?int

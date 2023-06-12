@@ -1,26 +1,27 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Reference;
 use App\Repository\ReferenceRepository;
 use App\Validator\CreateReferenceRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 
-#[Route('/api/reference')]
+use Symfony\Component\HttpKernel\Attribute\AsController;
+
+
+#[AsController]
 class ReferenceController extends AbstractController
 {
+ 
     public function __construct(private Security $security,)
     {
     }
     // Get Reference by ID and AuthUser ENDPOINT
-    #[Route('/{id}', name: 'app_reference_show', methods: ['GET'])]
+    // #[Route('reference/{id}', name: 'reference_show', methods: ['GET'])]
     public function show(EntityManagerInterface $entityManager, string $id): Response
     {
         $repository = $entityManager->getRepository(Reference::class);
@@ -37,17 +38,17 @@ class ReferenceController extends AbstractController
     }
 
     // Get all References created by AuthUser ENDPOINT
-    #[Route('/', name: 'app_reference_index', methods: ['GET'])]
-
+    // #[Route('/reference', name: 'reference', methods: ['GET'])]
     public function index(ReferenceRepository $referenceRepository): Response
     {
         $user = $this->security->getUser();
         return $this->json($referenceRepository->findByUser($user));
     }
     // Create New Reference ENDPOINT
-    #[Route('/new', name: 'app_reference_new', methods: ['POST'])]
+    // #[Route('/reference/new', name: 'reference_new', methods: ['POST'])]
     public function new(CreateReferenceRequest $request, EntityManagerInterface $entityManager): Response
     {
+
         $errors = $request->validate();
         if (count($errors)) {
             return new JsonResponse(['message' => 'Failed'], 403);
@@ -62,7 +63,7 @@ class ReferenceController extends AbstractController
     }
 
     // Edit Reference ENDPOINT
-    #[Route('/{id}/edit', name: 'app_reference_edit', methods: ['PUT'])]
+    // #[Route('/{id}/edit', name: 'reference_edit', methods: ['PUT'])]
     public function edit(CreateReferenceRequest $request, ReferenceRepository $referenceRepository, EntityManagerInterface $entityManager, $id): Response
     {
         $errors = $request->validate();
@@ -79,13 +80,14 @@ class ReferenceController extends AbstractController
         return new JsonResponse(['message' => 'New Reference updated']);
     }
     // Delete Reference ENDPOINT
-    #[Route('/{id}', name: 'app_reference_delete', methods: ['POST'])]
-    public function delete(Request $request, Reference $reference, ReferenceRepository $referenceRepository): Response
+    // #[Route('/{id}', name: 'reference_delete', methods: ['DELETE'])]
+    public function delete(Reference $reference, ReferenceRepository $referenceRepository,$id): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $reference->getId(), $request->request->get('_token'))) {
-            $referenceRepository->remove($reference, true);
+        $user = $this->security->getUser();
+        $reference=$referenceRepository->findById($id);
+        if($user==$reference->getUser()){
+            $referenceRepository->remove($reference,true);
         }
-
-        return $this->redirectToRoute('app_reference_index', [], Response::HTTP_SEE_OTHER);
+        return  new JsonResponse(['message' => 'Reference Deleted']);
     }
 }

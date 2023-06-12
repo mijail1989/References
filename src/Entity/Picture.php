@@ -1,11 +1,17 @@
 <?php
 
 namespace App\Entity;
-
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: PictureRepository::class)]
+#[ApiResource(
+    operations: [new Get(name: 'picture_new', uriTemplate: '/public/{img}'),]
+    )]
+    
+
 class Picture
 {
     #[ORM\Id]
