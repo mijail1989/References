@@ -1,3 +1,11 @@
+# What is References:
+Reference is REST API project, that allow every registered user to create their own online portfolio.
+
+Once registered, users will have the ability to upload their "References," which can correspond to articles, portfolios, projects, etc., that are already available online and need to be grouped on a single page.
+
+This project can be useful for professionals who have projects and articles scattered across different websites and need to showcase them all together with their respective links.
+
+
 # 🐳 Docker + PHP 8.2 + MySQL + Nginx + Symfony 6.2 Boilerplate
 
 ## Description
