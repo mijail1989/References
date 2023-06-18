@@ -61,13 +61,13 @@ class RegistrationController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
+        
         $signatureComponents = $verifyEmailHelper->generateSignature(
             'verify_email',
             $user->getId(),
             $user->getEmail(),
             ['id' => $user->getId()]
         );
-
         $emailEvent = new EmailEvent($user->getEmail(), $user->getName(), $signatureComponents->getSignedUrl());
         $this->eventDispatcher->dispatch($emailEvent, EmailEvent::REGISTRATION);
 
