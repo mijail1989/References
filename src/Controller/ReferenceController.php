@@ -51,7 +51,8 @@ class ReferenceController extends AbstractController
     // #[Route('/reference', name: 'reference', methods: ['GET'])]
     public function index(ReferenceRepository $referenceRepository): Response
     {
-        $cacheKey = 'reference';
+        $userId =$this->security->getUser()->getId();
+        $cacheKey = 'reference_user' . $userId;
         $response =$this->cache->get($cacheKey,function() use($referenceRepository){
             $user = $this->security->getUser();
             $reference = $referenceRepository->findByUser($user);
@@ -75,7 +76,8 @@ class ReferenceController extends AbstractController
         $this->entityManager->persist($reference);
         $this->entityManager->flush();
 
-        $cacheKey = 'reference';
+        $userId =$this->security->getUser()->getId();
+        $cacheKey = 'reference_user' . $userId;
         if ($this->cache->hasItem($cacheKey)) {
             $this->cache->delete($cacheKey);
         }

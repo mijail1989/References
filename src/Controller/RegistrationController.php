@@ -61,7 +61,6 @@ class RegistrationController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        
         $signatureComponents = $verifyEmailHelper->generateSignature(
             'verify_email',
             $user->getId(),
