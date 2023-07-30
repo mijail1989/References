@@ -1,7 +1,8 @@
-# What is References:
-🚀 Reference - Create Your Online Portfolio with Symfony 🚀
 
-Reference is an ongoing REST API project aimed at providing users with the ability to create and manage their own online portfolios. Built with Symfony, a powerful PHP framework, this project offers a feature-rich platform for showcasing your skills, projects, and achievements in a personalized portfolio.
+#  🚀 References - Create Your Online Portfolio with Symfony 🚀
+
+# What is References:
+References is an ongoing REST API project aimed at providing users with the ability to create and manage their own online portfolios. Built with Symfony, a powerful PHP framework, this project offers a feature-rich platform for showcasing your skills, projects, and achievements in a personalized portfolio.
 
 🔥 Key Features:
 - User Registration and Authentication: Easily sign up and log in to start building your portfolio.
@@ -12,7 +13,7 @@ Reference is an ongoing REST API project aimed at providing users with the abili
 - Responsive Design: Ensure your portfolio looks great on various devices, from desktops to mobile devices.
 
 🛠️ Work in Progress:
-Reference is actively evolving, and we are continuously adding new features and improvements. Our development team is committed to creating a seamless experience for our users and exploring innovative ways to enhance the platform.
+References is actively evolving, and we are continuously adding new features and improvements. Our development team is committed to creating a seamless experience for our users and exploring innovative ways to enhance the platform.
 
 📝 Note:
 As the project is under active development, some features might be subject to change, and we appreciate your understanding and feedback during this phase.
