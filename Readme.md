@@ -8,7 +8,6 @@ References is an ongoing REST API project aimed at providing users with the abil
 - Portfolio Creation: Create and customize your portfolio with various sections like About Me, Projects, Skills, and Contact.
 - Project Showcase: Showcase your projects with detailed descriptions, images, and links.
 - Skill Proficiency: Highlight your skills and proficiency levels for different technologies and tools.
-- Contact Form: Enable a contact form to receive messages from potential clients or collaborators.
 - Responsive Design: Ensure your portfolio looks great on various devices, from desktops to mobile devices.
 
 🛠️ Work in Progress:
