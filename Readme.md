@@ -1,10 +1,23 @@
 # What is References:
-Reference is REST API project, that allow every registered user to create their own online portfolio.
+🚀 Reference - Create Your Online Portfolio with Symfony 🚀
 
-Once registered, users will have the ability to upload their "References," which can correspond to articles, portfolios, projects, etc., that are already available online and need to be grouped on a single page.
+Reference is an ongoing REST API project aimed at providing users with the ability to create and manage their own online portfolios. Built with Symfony, a powerful PHP framework, this project offers a feature-rich platform for showcasing your skills, projects, and achievements in a personalized portfolio.
 
-This project can be useful for professionals who have projects and articles scattered across different websites and need to showcase them all together with their respective links.
+🔥 Key Features:
+- User Registration and Authentication: Easily sign up and log in to start building your portfolio.
+- Portfolio Creation: Create and customize your portfolio with various sections like About Me, Projects, Skills, and Contact.
+- Project Showcase: Showcase your projects with detailed descriptions, images, and links.
+- Skill Proficiency: Highlight your skills and proficiency levels for different technologies and tools.
+- Contact Form: Enable a contact form to receive messages from potential clients or collaborators.
+- Responsive Design: Ensure your portfolio looks great on various devices, from desktops to mobile devices.
 
+🛠️ Work in Progress:
+Reference is actively evolving, and we are continuously adding new features and improvements. Our development team is committed to creating a seamless experience for our users and exploring innovative ways to enhance the platform.
+
+📝 Note:
+As the project is under active development, some features might be subject to change, and we appreciate your understanding and feedback during this phase.
+
+Stay tuned for more updates as we continue to shape Reference into an even more powerful and user-friendly platform for online portfolios!
 
 # 🐳 Docker + PHP 8.2 + MySQL + Nginx + Symfony 6.2 Boilerplate
 
